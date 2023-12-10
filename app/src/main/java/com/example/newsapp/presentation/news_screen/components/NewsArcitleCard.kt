@@ -29,10 +29,11 @@ import com.example.newsapp.presentation.shared_components.ImageHolder
 fun NewsArticleCard(
     article : Article,
     modifier : Modifier = Modifier,
+    onCardClicked : (Article) -> Unit
 ){
     Card(
         elevation = CardDefaults.cardElevation(4.dp),
-        modifier = modifier.clickable {  },
+        modifier = modifier.clickable { onCardClicked(article) },
     ){
         Row(
             modifier = Modifier

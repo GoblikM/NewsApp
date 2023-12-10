@@ -26,7 +26,6 @@ import com.example.newsapp.presentation.article_detail_screen.components.Article
 @Composable
 fun ArticleDetailScreen(
 
-
     ) {
     val scrollState = rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -81,5 +80,6 @@ fun ArticleDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 fun ArticleDetailScreenPreview() {
-    ArticleDetailScreen()
+    ArticleDetailScreen(
+    )
 }

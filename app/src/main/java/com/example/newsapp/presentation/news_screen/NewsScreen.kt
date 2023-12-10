@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.newsapp.domain.model.Article
 import com.example.newsapp.presentation.news_screen.components.NewsArticleCard
 import com.example.newsapp.presentation.shared_components.TopBar
 import com.example.newsapp.ui.theme.NewsAppTheme
@@ -24,7 +25,8 @@ import com.example.newsapp.ui.theme.NewsAppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsScreen(
-    state: NewsScreenState
+    state: NewsScreenState,
+    onCardClicked: (Article) -> Unit
 )
 {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -43,7 +45,10 @@ fun NewsScreen(
                     .fillMaxSize()
                     .padding(padding),
             ) {
-                NewsList(state = state)
+                NewsList(
+                    state = state,
+                    onCardClicked = onCardClicked,
+                )
 
             }
         }
@@ -56,7 +61,7 @@ fun NewsScreen(
 @Preview(showBackground = true)
 fun NewsScreenPreview(){
     NewsAppTheme {
-        NewsScreen(state = NewsScreenState())
+        NewsScreen(state = NewsScreenState(), onCardClicked = {})
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,13 +69,14 @@ fun NewsScreenPreview(){
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 fun NewsScreenPreviewNightMode(){
     NewsAppTheme {
-        NewsScreen(state = NewsScreenState())
+        NewsScreen(state = NewsScreenState(), onCardClicked = {})
     }
 }
 
 @Composable
 fun NewsList(
     state: NewsScreenState,
+    onCardClicked: (Article) -> Unit,
     modifier : Modifier = Modifier,
     ){
     Surface(
@@ -84,7 +90,8 @@ fun NewsList(
         ){
             items(state.articles){ article ->
 
-                NewsArticleCard(article = article)
+                NewsArticleCard(article = article,
+                    onCardClicked = onCardClicked)
             }
 
         }

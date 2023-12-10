@@ -19,7 +19,12 @@ fun NavGraphSetup(
     ){
         composable(route = Screen.NewsScreen.route){
             val viewModel: NewsScreenViewModel = hiltViewModel()
-            NewsScreen(viewModel.state)
+            NewsScreen(
+               state = viewModel.state,
+                onCardClicked = {article ->
+                    navController.navigate(Screen.ArticleScreen.route + article.title)
+                }
+            )
         }
         composable(route = Screen.ArticleScreen.route){
             ArticleDetailScreen()
