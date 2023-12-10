@@ -1,4 +1,4 @@
-package com.example.newsapp.presentation.news_screen.components
+package com.example.newsapp.presentation.shared_components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
@@ -15,7 +15,7 @@ import com.example.newsapp.R
 @Composable
 fun ImageHolder(
     size: Dp
-){
+) {
     Image(
         painter = painterResource(id = R.drawable.test_img),
         contentDescription = "test-image",
