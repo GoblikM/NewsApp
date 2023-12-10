@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.newsapp.presentation.news_screen.components.ImageHolder
 
 @Composable
 fun NewsArticleCard(
@@ -92,7 +91,7 @@ fun NewsArticleCard(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                ImageHolder()
+                ImageHolder(120.dp)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
