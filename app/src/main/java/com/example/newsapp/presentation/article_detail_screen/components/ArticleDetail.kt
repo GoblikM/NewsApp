@@ -80,7 +80,7 @@ fun ArticleDetail(
             textAlign = TextAlign.Start
         )
         Spacer(modifier = Modifier.padding(8.dp))
-        ImageHolder(350.dp)
+        ImageHolder(350.dp, "ff")
         Spacer(modifier = Modifier.padding(8.dp))
         Text(
             text ="The prospect that US residents may soon be able to invest in " +

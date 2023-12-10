@@ -22,10 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.newsapp.domain.model.Article
 import com.example.newsapp.presentation.shared_components.ImageHolder
 
 @Composable
 fun NewsArticleCard(
+    article : Article,
     modifier : Modifier = Modifier,
 ){
     Card(
@@ -53,7 +55,7 @@ fun NewsArticleCard(
                 )
                 Spacer(modifier = Modifier.padding(8.dp))
                 Text(
-                    text = "Tatum and Doncic clash in Boston-Dallas matchup",
+                    text = article.title,
                     style = MaterialTheme.typography.titleLarge,
                     maxLines = 3
 
@@ -66,7 +68,7 @@ fun NewsArticleCard(
                     verticalAlignment = Alignment.Bottom
                 ) {
                     Text(
-                        text = "Source",
+                        text = article.source.name ?:"",
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = MaterialTheme.colorScheme.secondary)
                     )
@@ -80,7 +82,7 @@ fun NewsArticleCard(
                     )
                     Spacer(modifier = Modifier.padding(8.dp))
                     Text(
-                        text = "Date",
+                        text = article.publishedAt?:"",
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = MaterialTheme.colorScheme.secondary),
                     )
@@ -92,7 +94,7 @@ fun NewsArticleCard(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                ImageHolder(120.dp)
+                ImageHolder(120.dp, imgUrl = article.urlToImage?:"")
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),

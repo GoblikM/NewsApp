@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -22,7 +23,9 @@ import com.example.newsapp.ui.theme.NewsAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewsScreen()
+fun NewsScreen(
+    state: NewsScreenState
+)
 {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
@@ -40,7 +43,7 @@ fun NewsScreen()
                     .fillMaxSize()
                     .padding(padding),
             ) {
-                NewsList()
+                NewsList(state = state)
 
             }
         }
@@ -53,7 +56,7 @@ fun NewsScreen()
 @Preview(showBackground = true)
 fun NewsScreenPreview(){
     NewsAppTheme {
-        NewsScreen()
+        NewsScreen(state = NewsScreenState())
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,12 +64,13 @@ fun NewsScreenPreview(){
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 fun NewsScreenPreviewNightMode(){
     NewsAppTheme {
-        NewsScreen()
+        NewsScreen(state = NewsScreenState())
     }
 }
 
 @Composable
 fun NewsList(
+    state: NewsScreenState,
     modifier : Modifier = Modifier,
     ){
     Surface(
@@ -78,8 +82,9 @@ fun NewsList(
             verticalArrangement = Arrangement.spacedBy(12.dp)
 
         ){
-            items(10){
-                NewsArticleCard()
+            items(state.articles){ article ->
+
+                NewsArticleCard(article = article)
             }
 
         }
