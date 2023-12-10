@@ -14,6 +14,7 @@ import coil.request.ImageRequest
 
 @Composable
 fun ImageHolder(
+    modifier: Modifier = Modifier,
     size: Dp,
     imgUrl: String
 ) {

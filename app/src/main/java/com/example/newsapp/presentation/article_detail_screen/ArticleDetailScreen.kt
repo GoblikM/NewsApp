@@ -19,13 +19,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.newsapp.presentation.article_detail_screen.components.ArticleDetail
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArticleDetailScreen(
-
+    articleURI: String,
     ) {
     val scrollState = rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -76,10 +75,3 @@ fun ArticleDetailScreen(
 }
 
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-fun ArticleDetailScreenPreview() {
-    ArticleDetailScreen(
-    )
-}

@@ -1,11 +1,11 @@
 package com.example.newsapp.presentation.news_screen
 
-import com.example.newsapp.domain.model.Article
+import com.example.newsapp.domain.model.Result
 
 data class NewsScreenState(
     val isLoading: Boolean = false,
-    val articles: List<Article> = emptyList(),
+    val articles: List<Result> = emptyList(),
     val error: String? = null,
     val isSearchBarVisible: Boolean = false,
-    val selectedArticle: Article? = null,
+    val selectedArticle: Result? = null,
 )

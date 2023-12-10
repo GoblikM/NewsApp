@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.newsapp.domain.model.Article
+import com.example.newsapp.domain.model.Result
 import com.example.newsapp.presentation.news_screen.components.NewsArticleCard
 import com.example.newsapp.presentation.shared_components.TopBar
 import com.example.newsapp.ui.theme.NewsAppTheme
@@ -26,7 +26,7 @@ import com.example.newsapp.ui.theme.NewsAppTheme
 @Composable
 fun NewsScreen(
     state: NewsScreenState,
-    onCardClicked: (Article) -> Unit
+    onCardClicked: (Result) -> Unit
 )
 {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -76,7 +76,7 @@ fun NewsScreenPreviewNightMode(){
 @Composable
 fun NewsList(
     state: NewsScreenState,
-    onCardClicked: (Article) -> Unit,
+    onCardClicked: (Result) -> Unit,
     modifier : Modifier = Modifier,
     ){
     Surface(
@@ -90,8 +90,10 @@ fun NewsList(
         ){
             items(state.articles){ article ->
 
-                NewsArticleCard(article = article,
-                    onCardClicked = onCardClicked)
+                NewsArticleCard(
+                    article = article,
+                    onCardClicked = onCardClicked
+                )
             }
 
         }
