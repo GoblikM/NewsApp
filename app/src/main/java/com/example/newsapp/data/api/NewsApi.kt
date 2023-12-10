@@ -13,7 +13,6 @@ interface NewsApi {
     @GET("top-headlines")
     suspend fun getTopNews(
         @Query("country") countryCode: String = "us",
-        @Query("category") category: String,
         @Query("apiKey") apiKey: String = API_KEY
     ) : NewsResponse
 }
