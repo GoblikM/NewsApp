@@ -25,7 +25,7 @@ import com.example.newsapp.presentation.article_detail_screen.components.Article
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArticleDetailScreen(
-    title: String,
+
 
     ) {
     val scrollState = rememberScrollState()
@@ -34,7 +34,7 @@ fun ArticleDetailScreen(
         .nestedScroll(scrollBehavior.nestedScrollConnection)
         .fillMaxSize(),
         topBar = {
-            TopAppBar(scrollBehavior = scrollBehavior, title = { Text(text = title) }, actions = {
+            TopAppBar(scrollBehavior = scrollBehavior, title = { Text(text = "title") }, actions = {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack, contentDescription = "Back"
@@ -81,7 +81,5 @@ fun ArticleDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 fun ArticleDetailScreenPreview() {
-    ArticleDetailScreen(
-        title = "Article"
-    )
+    ArticleDetailScreen()
 }
