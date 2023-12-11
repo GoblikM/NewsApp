@@ -17,8 +17,8 @@ import javax.inject.Singleton
 object AppModule {
 
     /**
-     * This method provides the NewsApi instance
-     * @return NewsApi
+     * This method provides the com.example.newsapp.data.api.NewsApi instance
+     * @return com.example.newsapp.data.api.NewsApi
      */
     @Provides
     @Singleton

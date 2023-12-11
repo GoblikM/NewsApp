@@ -50,7 +50,7 @@ fun NewsArticleCard(
 
                 ) {
                 Text(
-                    text = article.categories.firstOrNull()?.uri?.uppercase() ?: "CATEGORY",
+                    text = article.source?.title?.uppercase() ?:  "Neuveden",
                     style = MaterialTheme.typography.titleSmall.copy(
                         color = MaterialTheme.colorScheme.primary
                     ),
@@ -92,13 +92,7 @@ fun NewsArticleCard(
                     verticalAlignment = Alignment.Bottom
 
                 ) {
-                    Text(
-                        text = article.authors.firstOrNull()?.name ?: article.source.uri
-                        ?: "Neuveden",
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    )
+
                     //add dot
                     Text(
                         text = "•",
