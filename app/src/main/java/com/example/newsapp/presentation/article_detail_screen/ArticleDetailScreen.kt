@@ -24,6 +24,7 @@ import com.example.newsapp.presentation.article_detail_screen.components.Article
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArticleDetailScreen(
+    state: ArticleDetailScreenState,
     articleURI: String,
     ) {
     val scrollState = rememberScrollState()
@@ -66,7 +67,11 @@ fun ArticleDetailScreen(
                     .fillMaxSize()
                     .padding(padding),
             ) {
-                ArticleDetail(scrollState)
+                state.article?.let {
+                    ArticleDetail(
+                        article = it,
+                        scrollState = scrollState)
+                }
             }
 
 

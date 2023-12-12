@@ -16,10 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.newsapp.domain.model.articleDetailResponse.Info
 import com.example.newsapp.presentation.shared_components.ImageHolder
 
 @Composable
 fun ArticleDetail(
+    article : Info,
     scrollState: ScrollState
 ) {
     Column(
@@ -36,7 +38,7 @@ fun ArticleDetail(
             )
         )
         Text(
-            text = "Tatum and Doncic clash in Boston-Dallas matchup",
+            text = article.title,
             style = MaterialTheme.typography.headlineLarge,
             textAlign = TextAlign.Start
 
@@ -63,7 +65,7 @@ fun ArticleDetail(
                     color = MaterialTheme.colorScheme.secondary),
             )
             Spacer(modifier = Modifier.padding(8.dp))
-            Text(text = "Date",
+            Text(text = article.date,
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = MaterialTheme.colorScheme.secondary
                 )
@@ -80,7 +82,7 @@ fun ArticleDetail(
             textAlign = TextAlign.Start
         )
         Spacer(modifier = Modifier.padding(8.dp))
-        ImageHolder(size =350.dp, imgUrl = "ff")
+        ImageHolder(size =350.dp, imgUrl = article.image)
         Spacer(modifier = Modifier.padding(8.dp))
         Text(
             text ="The prospect that US residents may soon be able to invest in " +

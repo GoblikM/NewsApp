@@ -1,5 +1,6 @@
 package com.example.newsapp.data.api
 
+import com.example.newsapp.domain.model.articleDetailResponse.ArticleDetail
 import com.example.newsapp.domain.model.newsResponse.NewsResponse
 import com.example.newsapp.utils.getDate
 import com.example.newsapp.utils.getPreviousDate
@@ -26,4 +27,13 @@ interface NewsApi {
         @Query("includeArticleImage") includeArticleImage: Boolean = true,
         @Query("apiKey") apiKey: String = API_KEY
     ): NewsResponse
+
+    @GET("getArticle")
+    suspend fun getArticle(
+        @Query("articleUri") articleUri: String,
+        @Query("resultType") resultType: String = "info",
+        @Query("includeArticleImage") includeArticleImage: Boolean = true,
+        @Query("includeConceptLabel") includeConceptLabel: Boolean = false,
+        @Query("apiKey") apiKey: String = API_KEY,
+    ) : Map<String, ArticleDetail>
 }
