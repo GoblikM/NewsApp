@@ -9,6 +9,13 @@ import retrofit2.http.Query
 
 interface NewsApi {
 
+    /**
+     * This companion object will hold the base url and api key
+     * @property BASE_URL
+     * @property API_KEY
+     * @property currentDate
+     * @property previousWeekDate
+     */
     companion object {
         const val BASE_URL = "https://www.newsapi.ai/api/v1/article/"
         const val API_KEY = "0d077d3b-0d32-49ea-968a-f3fe1e73405d"
@@ -16,6 +23,10 @@ interface NewsApi {
         val previousWeekDate = getPreviousDate(7)
     }
 
+    /**
+     * This function will fetch the news from the API
+     * @return NewsResponse
+     */
     @GET("getArticles")
     suspend fun getTopNews(
         @Query("dateStart") dateStart: String = previousWeekDate,
@@ -28,6 +39,11 @@ interface NewsApi {
         @Query("apiKey") apiKey: String = API_KEY
     ): NewsResponse
 
+    /**
+     * This function will fetch the article details from the API
+     * @param articleUri
+     * @return Map<String, ArticleDetail>
+     */
     @GET("getArticle")
     suspend fun getArticle(
         @Query("articleUri") articleUri: String,

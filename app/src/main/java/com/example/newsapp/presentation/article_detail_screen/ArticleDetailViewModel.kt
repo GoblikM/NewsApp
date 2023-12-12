@@ -19,15 +19,23 @@ class ArticleDetailViewModel @Inject constructor(
 
     var state by mutableStateOf(ArticleDetailScreenState())
 
+    // Get the article uri from the savedStateHandle and remove the {uri} from the string
     private val articleURI : String = checkNotNull(savedStateHandle.get<String>("uri")
         ?.replace("{uri}",""))
+
+    /**
+     * This init block will call the getArticleDetails function
+     */
     init {
         Log.d("articleUri", "ArticleDetailViewModel: $articleURI")
         getArticleDetails(articleURI = articleURI)
     }
 
-
-
+    /**
+     * This function will fetch the article details from the API and update the state
+     * @param articleURI
+     *
+     */
     private fun getArticleDetails(articleURI: String) {
         viewModelScope.launch {
             state = when(val result = newsRepository.getArticleDetails(articleURI)){

@@ -9,6 +9,14 @@ import com.example.newsapp.domain.repository.INewsRepository
 import com.example.newsapp.utils.Resource
 
 class NewsRepositoryImpl(private val newsApi: NewsApi) : INewsRepository {
+
+    /**
+     * This function will fetch the news from the API
+     * @return Resource<List<Result>>
+     *     Success -> List<Result>
+     *     Error -> Error message
+     *
+     */
     override suspend fun getNews(): Resource<List<Result>> {
         return try {
             val response = newsApi.getTopNews()
@@ -19,9 +27,16 @@ class NewsRepositoryImpl(private val newsApi: NewsApi) : INewsRepository {
         }
     }
 
+    /**
+     * This function will fetch the article details from the API
+     * @param articleUri
+     * @return Resource<Info>
+     *     Success -> Info
+     *     Error -> Error message
+     *
+     */
     override suspend fun getArticleDetails(articleUri: String): Resource<Info> {
         return try {
-            //init AriticleDetailResponse data class and set
             val response: Map<String, ArticleDetail> = newsApi.getArticle(articleUri = articleUri)
             Log.d("response", "getArticleDetails: $response" )
             val articleInfo = response[articleUri]?.info
@@ -30,9 +45,7 @@ class NewsRepositoryImpl(private val newsApi: NewsApi) : INewsRepository {
         } catch (e: Exception) {
             Resource.Error(message = "Failed to fetch the news ${e.message}")
         }
-        catch (e: Exception) {
-            Resource.Error(message = "Failed to fetch the news ${e.message}")
-        }
+
     }
 }
 
