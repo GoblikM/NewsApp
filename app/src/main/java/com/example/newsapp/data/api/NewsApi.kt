@@ -1,5 +1,6 @@
 package com.example.newsapp.data.api
-import com.example.newsapp.domain.model.NewsResponse
+
+import com.example.newsapp.domain.model.newsResponse.NewsResponse
 import com.example.newsapp.utils.getDate
 import com.example.newsapp.utils.getPreviousDate
 import retrofit2.http.GET
@@ -19,6 +20,7 @@ interface NewsApi {
         @Query("dateStart") dateStart: String = previousWeekDate,
         @Query("dateEnd") dateEnd: String = currentDate,
         @Query("lang") lang: String = "ces",
+        @Query("isDuplicate") isDuplicate : String = "skipDuplicates",
         @Query("resultType") resultType: String = "articles",
         @Query("articlesSortBy") articlesSortBy: String = "rel",
         @Query("includeArticleImage") includeArticleImage: Boolean = true,

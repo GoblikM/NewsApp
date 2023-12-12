@@ -1,6 +1,6 @@
 package com.example.newsapp.domain.repository
 
-import com.example.newsapp.domain.model.Result
+import com.example.newsapp.domain.model.newsResponse.Result
 import com.example.newsapp.utils.Resource
 
 interface INewsRepository {

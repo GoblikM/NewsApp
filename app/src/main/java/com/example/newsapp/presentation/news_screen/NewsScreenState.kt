@@ -1,6 +1,6 @@
 package com.example.newsapp.presentation.news_screen
 
-import com.example.newsapp.domain.model.Result
+import com.example.newsapp.domain.model.newsResponse.Result
 
 data class NewsScreenState(
     val isLoading: Boolean = false,
