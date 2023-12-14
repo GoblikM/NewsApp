@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NewsApp</string>
+    <string name="saved_news">Uložené zprávy</string>
+    <string name="news_title">Zprávy</string>
 </resources>

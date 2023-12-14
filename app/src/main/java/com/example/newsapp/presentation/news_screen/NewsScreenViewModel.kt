@@ -24,7 +24,7 @@ class NewsScreenViewModel @Inject constructor(
     var state by mutableStateOf(NewsScreenState())
 
     init {
-       getNewsArticles()
+       //getNewsArticles()
     }
 
     private fun getNewsArticles() {

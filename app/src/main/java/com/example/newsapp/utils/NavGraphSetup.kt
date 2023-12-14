@@ -12,6 +12,8 @@ import com.example.newsapp.presentation.article_detail_screen.ArticleDetailScree
 import com.example.newsapp.presentation.article_detail_screen.ArticleDetailViewModel
 import com.example.newsapp.presentation.news_screen.NewsScreen
 import com.example.newsapp.presentation.news_screen.NewsScreenViewModel
+import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScreen
+import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScreenState
 
 @Composable
 fun NavGraphSetup(
@@ -29,7 +31,11 @@ fun NavGraphSetup(
                 onCardClicked = {result->
                     Log.d("SentUri", "NavGraphSetup: ${result.uri}")
                     navController.navigate(Screen.ArticleScreen.route + result.uri)
+                },
+                onSavedArticlesClicked = {
+                    navController.navigate(Screen.SavedArticlesScreen.route)
                 }
+
             )
         }
         composable(
@@ -43,6 +49,21 @@ fun NavGraphSetup(
             ArticleDetailScreen(
                 state = viewModel.state,
                 articleURI = uri?: "",
+                onReturnBntClicked = {
+                    navController.popBackStack()
+                }
+            )
+
+        }
+        composable(
+            route = Screen.SavedArticlesScreen.route
+        ){
+            SavedArticlesScreen(
+                state = SavedArticlesScreenState(),
+                onCardClicked = {result->
+                    Log.d("SentUri", "NavGraphSetup: ${result.uri}")
+                    navController.navigate(Screen.ArticleScreen.route + result.uri)
+                },
                 onReturnBntClicked = {
                     navController.popBackStack()
                 }

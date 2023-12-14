@@ -101,5 +101,9 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
 
+    // Lottie animations
+    val lottie_version = "6.2.0"
+    implementation("com.airbnb.android:lottie-compose:$lottie_version")
+
 
 }
