@@ -93,13 +93,6 @@ fun NewsArticleCard(
 
                 ) {
 
-                    //add dot
-                    Text(
-                        text = "•",
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            color = MaterialTheme.colorScheme.secondary
-                        ),
-                    )
                     Text(
                         text = article.date,
                         style = MaterialTheme.typography.bodySmall.copy(

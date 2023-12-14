@@ -21,6 +21,7 @@ fun TopBar(
     scrollBehavior: TopAppBarScrollBehavior,
     title: String,
     onSearchIconClicked: () -> Unit,
+    onMenuIconClicked: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = title, fontWeight = FontWeight.Bold) },
@@ -36,7 +37,7 @@ fun TopBar(
             }
         },
         navigationIcon = {
-            IconButton(onClick = {}) {
+            IconButton(onClick = onMenuIconClicked) {
                 Icon(imageVector = Icons.Default.Menu, contentDescription = "Menu")
             }
         }
@@ -51,6 +52,7 @@ fun TopBarPreview() {
     TopBar(
         scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
         title = "News",
-        onSearchIconClicked = {}
+        onSearchIconClicked = {},
+        onMenuIconClicked = {}
     )
 }
