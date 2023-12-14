@@ -6,7 +6,7 @@ data class Author(
     @SerializedName("uri")
     val uri: String,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("type")
     val type: String,
     @SerializedName("isAgency")

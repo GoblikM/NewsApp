@@ -32,7 +32,7 @@ fun ArticleDetail(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "CATEGORY",
+            text = "",
             style = MaterialTheme.typography.titleSmall.copy(
                 color = MaterialTheme.colorScheme.tertiary
             )
@@ -51,7 +51,7 @@ fun ArticleDetail(
 
             ) {
             Text(
-                text = "Author",
+                text = article.authors.firstOrNull()?.name ?: "Unknown",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = MaterialTheme.colorScheme.secondary
                 )
@@ -73,10 +73,7 @@ fun ArticleDetail(
 
         }
         Text(
-            text = "After crashes, scandals, and SBF’s guilty verdict, " +
-                    "many hoped the crypto industry would grow up. " +
-                    "Speculation around the arrival of a spot bitcoin ETF shows " +
-                    "old hype dies hard.",
+            text = "",
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.primary),
             textAlign = TextAlign.Start
@@ -85,12 +82,7 @@ fun ArticleDetail(
         ImageHolder(size =350.dp, imgUrl = article.image)
         Spacer(modifier = Modifier.padding(8.dp))
         Text(
-            text ="The prospect that US residents may soon be able to invest in " +
-                    "bitcoin through their brokerage, as if it were a regular stock, " +
-                    "has prompted a fresh round of hype in crypto circlesand a surge in crypto " +
-                    "The prospect that US residents may soon be able to invest in " +
-                    "bitcoin through their brokerage, as if it were a regular stock, " +
-                    "has prompted a fresh round of hype in crypto circlesand a surge in crypto fwesfjspfj wegopjwepgj ",
+            text = article.body,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Start,
 

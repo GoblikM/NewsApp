@@ -20,7 +20,7 @@ data class Info(
     @SerializedName("dataType")
     val dataType: String,
     @SerializedName("sim")
-    val sim: Int,
+    val sim: Double,
     @SerializedName("url")
     val url: String,
     @SerializedName("title")

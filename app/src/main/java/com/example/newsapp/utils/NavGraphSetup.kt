@@ -42,7 +42,10 @@ fun NavGraphSetup(
             Log.d("RecievedUri", "NavGraphSetup: $uri")
             ArticleDetailScreen(
                 state = viewModel.state,
-                articleURI = uri?: ""
+                articleURI = uri?: "",
+                onReturnBntClicked = {
+                    navController.popBackStack()
+                }
             )
 
         }

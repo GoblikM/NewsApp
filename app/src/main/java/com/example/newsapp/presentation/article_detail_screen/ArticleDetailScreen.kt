@@ -26,6 +26,7 @@ import com.example.newsapp.presentation.article_detail_screen.components.Article
 fun ArticleDetailScreen(
     state: ArticleDetailScreenState,
     articleURI: String,
+    onReturnBntClicked: () -> Unit
     ) {
     val scrollState = rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -33,8 +34,9 @@ fun ArticleDetailScreen(
         .nestedScroll(scrollBehavior.nestedScrollConnection)
         .fillMaxSize(),
         topBar = {
-            TopAppBar(scrollBehavior = scrollBehavior, title = { Text(text = "title") }, actions = {
-                IconButton(onClick = { /*TODO*/ }) {
+            TopAppBar(scrollBehavior = scrollBehavior, title = { Text(text = state.article?.source?.title?.uppercase() ?: "") },
+                actions = {
+                IconButton(onClick = { onReturnBntClicked() }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack, contentDescription = "Back"
                     )
