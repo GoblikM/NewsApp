@@ -38,6 +38,7 @@ class ArticleDetailViewModel @Inject constructor(
      */
     private fun getArticleDetails(articleURI: String) {
         viewModelScope.launch {
+            state = state.copy(isLoading = true)
             state = when(val result = newsRepository.getArticleDetails(articleURI)){
                 is Resource.Success -> {
                     state.copy(

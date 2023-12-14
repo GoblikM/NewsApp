@@ -1,8 +1,12 @@
 package com.example.newsapp.presentation.shared_components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -18,8 +22,9 @@ import com.example.newsapp.R
 fun ImageHolder(
     modifier: Modifier = Modifier,
     size: Dp,
-    imgUrl: String?
+    imgUrl: String?,
 ) {
+    val isLoading  = remember { mutableStateOf(true) }
     AsyncImage(
         model = ImageRequest
             .Builder(LocalContext.current)
@@ -31,9 +36,23 @@ fun ImageHolder(
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
             .size(size),
-        placeholder = painterResource(id = R.drawable.placeholder),
-        error = painterResource(id = R.drawable.no_img)
-
+        //placeholder = painterResource(id = R.drawable.placeholder),
+        error = painterResource(id = R.drawable.no_img),
+        onLoading = {
+            isLoading.value = true
+        },
+        onSuccess = {
+            isLoading.value = false
+        },
+        onError = {
+            isLoading.value = false
+        }
     )
+    if(isLoading.value){
+        Box(modifier = modifier){
+            CircularProgressIndicator()
+        }
+
+    }
 
 }

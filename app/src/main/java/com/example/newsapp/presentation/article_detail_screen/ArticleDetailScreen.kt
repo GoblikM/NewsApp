@@ -1,5 +1,6 @@
 package com.example.newsapp.presentation.article_detail_screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -7,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -17,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.example.newsapp.presentation.article_detail_screen.components.ArticleDetail
@@ -73,6 +76,15 @@ fun ArticleDetailScreen(
                     ArticleDetail(
                         article = it,
                         scrollState = scrollState)
+                }
+            }
+            Box(modifier = Modifier.fillMaxSize()) {
+                state.isLoading.let {
+                    if (it) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .align(alignment = Alignment.Center))
+                    }
                 }
             }
 

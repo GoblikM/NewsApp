@@ -24,11 +24,12 @@ class NewsScreenViewModel @Inject constructor(
     var state by mutableStateOf(NewsScreenState())
 
     init {
-       //getNewsArticles()
+       getNewsArticles()
     }
 
     private fun getNewsArticles() {
         viewModelScope.launch {
+            state = state.copy(isLoading = true)
             state = when(val result = newsRepository.getNews()){
                 is Resource.Success -> {
                     state.copy(
