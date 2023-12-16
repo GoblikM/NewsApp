@@ -17,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -25,16 +24,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.domain.model.newsResponse.Result
 import com.example.newsapp.presentation.news_screen.NewsScreenEvent
-import com.example.newsapp.presentation.news_screen.NewsScreenState
 import com.example.newsapp.presentation.shared_components.ImageHolder
-import kotlinx.coroutines.launch
 
 @Composable
 fun NewsArticleCard(
     article: Result,
     modifier: Modifier = Modifier,
     onCardClicked: (Result) -> Unit,
-    onEvent: (NewsScreenEvent) -> Unit
+    onEvent: (NewsScreenEvent) -> Unit,
+    showSnackBar: () -> Unit
 ) {
 
     Card(
@@ -124,8 +122,8 @@ fun NewsArticleCard(
                         modifier = Modifier
                             .size(20.dp)
                             .clickable {
+                                showSnackBar()
                                 onEvent(NewsScreenEvent.OnSaveArticleClicked(article))
-
                             }
                     )
                     Spacer(modifier = Modifier.padding(8.dp))

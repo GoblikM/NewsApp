@@ -22,16 +22,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -57,6 +54,7 @@ fun NewsScreen(
     val scope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val snackbarHostState = remember { SnackbarHostState() }
 
 
     ModalNavigationDrawer(
@@ -75,6 +73,12 @@ fun NewsScreen(
         }) {
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            snackbarHost = {
+                SnackbarHost(
+                    hostState = snackbarHostState,
+
+                )
+            },
             topBar = {
                 TopBar(
                     scrollBehavior = scrollBehavior,
@@ -112,7 +116,17 @@ fun NewsScreen(
                         state = state,
                         onCardClicked = onCardClicked,
                         lazyListState = lazyListState,
-                        onEvent = onEvent
+                        onEvent = onEvent,
+                        showSnackBar = {
+                            scope.launch {
+                                val result = snackbarHostState.showSnackbar(
+                                    message = "Článek uložen",
+                                    actionLabel = "Zavřít",
+                                    duration = SnackbarDuration.Short,
+                                )
+
+                            }
+                        }
                     )
 
                 }
@@ -129,7 +143,8 @@ fun NewsList(
     onCardClicked: (Result) -> Unit,
     modifier: Modifier = Modifier,
     lazyListState: LazyListState,
-    onEvent: (NewsScreenEvent) -> Unit
+    onEvent: (NewsScreenEvent) -> Unit,
+    showSnackBar: () -> Unit
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background
@@ -146,7 +161,8 @@ fun NewsList(
                 NewsArticleCard(
                     article = article,
                     onCardClicked = onCardClicked,
-                    onEvent = onEvent
+                    onEvent = onEvent,
+                    showSnackBar = showSnackBar
                 )
             }
 
