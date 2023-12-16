@@ -1,45 +1,33 @@
 package com.example.newsapp.presentation.news_screen.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.newsapp.data.database.ArticleEntity
 import com.example.newsapp.domain.model.newsResponse.Result
-import com.example.newsapp.presentation.news_screen.NewsScreenEvent
-import com.example.newsapp.presentation.news_screen.NewsScreenState
 import com.example.newsapp.presentation.shared_components.ImageHolder
-import kotlinx.coroutines.launch
 
 @Composable
-fun NewsArticleCard(
-    article: Result,
+fun SavedArticlesCard(
+    article: ArticleEntity,
     modifier: Modifier = Modifier,
     onCardClicked: (Result) -> Unit,
-    onEvent: (NewsScreenEvent) -> Unit
 ) {
-
     Card(
         elevation = CardDefaults.cardElevation(4.dp),
-        modifier = modifier.clickable { onCardClicked(article) },
     ) {
         Column(
             modifier = Modifier
@@ -56,7 +44,7 @@ fun NewsArticleCard(
 
                 ) {
                 Text(
-                    text = article.source?.title?.uppercase() ?:  "Neuveden",
+                    text = article.source?.uppercase() ?: "Neuveden",
                     style = MaterialTheme.typography.titleSmall.copy(
                         color = MaterialTheme.colorScheme.primary
                     ),
@@ -105,40 +93,6 @@ fun NewsArticleCard(
                             color = MaterialTheme.colorScheme.secondary
                         ),
                     )
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.Bottom
-
-                ) {
-
-                    Icon(
-
-                        imageVector = Icons.Default.ThumbUp,
-                        contentDescription = "Favorite",
-                        tint = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable {
-                                onEvent(NewsScreenEvent.OnSaveArticleClicked(article))
-
-                            }
-                    )
-                    Spacer(modifier = Modifier.padding(8.dp))
-
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        tint = MaterialTheme.colorScheme.secondary,
-                        contentDescription = "Share",
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable {  }
-                    )
-
                 }
 
 

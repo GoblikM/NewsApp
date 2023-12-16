@@ -14,6 +14,7 @@ import com.example.newsapp.presentation.news_screen.NewsScreen
 import com.example.newsapp.presentation.news_screen.NewsScreenViewModel
 import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScreen
 import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScreenState
+import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScreenViewModel
 
 @Composable
 fun NavGraphSetup(
@@ -34,7 +35,8 @@ fun NavGraphSetup(
                 },
                 onSavedArticlesClicked = {
                     navController.navigate(Screen.SavedArticlesScreen.route)
-                }
+                },
+                onEvent = viewModel::onEvent
 
             )
         }
@@ -58,12 +60,10 @@ fun NavGraphSetup(
         composable(
             route = Screen.SavedArticlesScreen.route
         ){
+            val viewModel : SavedArticlesScreenViewModel = hiltViewModel()
             SavedArticlesScreen(
-                state = SavedArticlesScreenState(),
-                onCardClicked = {result->
-                    Log.d("SentUri", "NavGraphSetup: ${result.uri}")
-                    navController.navigate(Screen.ArticleScreen.route + result.uri)
-                },
+                state = viewModel.state,
+                onCardClicked = {},
                 onReturnBntClicked = {
                     navController.popBackStack()
                 }

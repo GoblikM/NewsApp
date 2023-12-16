@@ -1,10 +1,13 @@
 package com.example.newsapp.presentation.news_screen
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.newsapp.data.database.ArticleEntity
+import com.example.newsapp.domain.model.newsResponse.Result
 import com.example.newsapp.domain.repository.INewsRepository
 import com.example.newsapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +27,17 @@ class NewsScreenViewModel @Inject constructor(
     var state by mutableStateOf(NewsScreenState())
 
     init {
-       //getNewsArticles()
+       getNewsArticles()
+    }
+
+    fun onEvent(event: NewsScreenEvent) {
+        when (event) {
+            is NewsScreenEvent.OnSaveArticleClicked -> {
+                viewModelScope.launch {
+                    saveArticle(event.article)
+                }
+            }
+        }
     }
 
     private fun getNewsArticles() {
@@ -50,5 +63,16 @@ class NewsScreenViewModel @Inject constructor(
 
         }
     }
+
+    private suspend fun saveArticle(article : Result){
+            try {
+                Log.d("Article", "saveArticle: $article")
+                newsRepository.insertArticleToDb(article)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+
 
 }

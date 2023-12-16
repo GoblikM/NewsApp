@@ -1,6 +1,5 @@
 package com.example.newsapp.presentation.news_screen
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,24 +19,29 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.R
 import com.example.newsapp.domain.model.newsResponse.Result
 import com.example.newsapp.presentation.news_screen.components.MenuDrawer
 import com.example.newsapp.presentation.news_screen.components.NewsArticleCard
 import com.example.newsapp.presentation.shared_components.TopBar
-import com.example.newsapp.ui.theme.NewsAppTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,11 +50,14 @@ fun NewsScreen(
     state: NewsScreenState,
     onCardClicked: (Result) -> Unit,
     onSavedArticlesClicked: () -> Unit,
+    onEvent: (NewsScreenEvent) -> Unit
+
 ) {
     val lazyListState = rememberLazyListState()
     val scope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -60,13 +67,12 @@ fun NewsScreen(
                     onSavedArticlesClicked()
                     scope.launch {
                         drawerState.close()
+
                     }
                 }
             )
 
-
         }) {
-
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
@@ -106,6 +112,7 @@ fun NewsScreen(
                         state = state,
                         onCardClicked = onCardClicked,
                         lazyListState = lazyListState,
+                        onEvent = onEvent
                     )
 
                 }
@@ -115,30 +122,14 @@ fun NewsScreen(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-@Preview(showBackground = true)
-fun NewsScreenPreview() {
-    NewsAppTheme {
-        NewsScreen(state = NewsScreenState(), onCardClicked = {}, onSavedArticlesClicked = {})
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-fun NewsScreenPreviewNightMode() {
-    NewsAppTheme {
-        NewsScreen(state = NewsScreenState(), onCardClicked = {}, onSavedArticlesClicked = {})
-    }
-}
 
 @Composable
 fun NewsList(
     state: NewsScreenState,
     onCardClicked: (Result) -> Unit,
     modifier: Modifier = Modifier,
-    lazyListState: LazyListState
+    lazyListState: LazyListState,
+    onEvent: (NewsScreenEvent) -> Unit
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background
@@ -154,7 +145,8 @@ fun NewsList(
 
                 NewsArticleCard(
                     article = article,
-                    onCardClicked = onCardClicked
+                    onCardClicked = onCardClicked,
+                    onEvent = onEvent
                 )
             }
 
@@ -164,11 +156,11 @@ fun NewsList(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
 
-        ){
-            if (state.isLoading){
+        ) {
+            if (state.isLoading) {
                 CircularProgressIndicator()
             }
-            if(state.error != null ){
+            if (state.error != null) {
                 Text(text = state.error)
             }
 

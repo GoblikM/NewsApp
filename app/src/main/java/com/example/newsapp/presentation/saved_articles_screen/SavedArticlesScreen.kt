@@ -1,5 +1,6 @@
 package com.example.newsapp.presentation.saved_articles_screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,7 +36,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.newsapp.R
 import com.example.newsapp.domain.model.newsResponse.Result
-import com.example.newsapp.presentation.news_screen.components.NewsArticleCard
+import com.example.newsapp.presentation.news_screen.components.SavedArticlesCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -99,9 +100,13 @@ fun SavedArticlesList(
 ) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.no_saved_articles))
 
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        modifier = modifier
+            .padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
         items(state.articles) { article ->
-            NewsArticleCard(
+            SavedArticlesCard(
                 article = article,
                 onCardClicked = onCardClicked
             )

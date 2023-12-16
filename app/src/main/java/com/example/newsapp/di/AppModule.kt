@@ -1,12 +1,17 @@
 package com.example.newsapp.di
 
+import android.content.Context
+import androidx.room.Room
 import com.example.newsapp.data.api.NewsApi
 import com.example.newsapp.data.api.NewsApi.Companion.BASE_URL
+import com.example.newsapp.data.database.ArticleDatabase
 import com.example.newsapp.data.repository.NewsRepositoryImpl
+import com.example.newsapp.data.database.ArticleDao
 import com.example.newsapp.domain.repository.INewsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -42,7 +47,25 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNewsRepository(newsApi: NewsApi) : INewsRepository {
-        return NewsRepositoryImpl(newsApi)
+    fun provideNewsRepository(newsApi: NewsApi, articleDao: ArticleDao) : INewsRepository {
+        return NewsRepositoryImpl(newsApi, articleDao)
     }
+
+    @Provides
+    @Singleton
+    fun provideRoomDatabase(@ApplicationContext appContext: Context) : ArticleDatabase {
+        return Room.databaseBuilder(
+            appContext,
+            ArticleDatabase::class.java,
+            "article_database"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDao(articleDatabase: ArticleDatabase) : ArticleDao {
+        return articleDatabase.articleDao()
+    }
+
+
 }
