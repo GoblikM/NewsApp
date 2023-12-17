@@ -59,6 +59,7 @@ class NewsScreenViewModel @Inject constructor(
                 is Resource.Success -> {
                     state.copy(
                         articles =  result.data ?: emptyList(),
+                        error = null,
                         isLoading = false,
                         isRefreshing = false
                     )

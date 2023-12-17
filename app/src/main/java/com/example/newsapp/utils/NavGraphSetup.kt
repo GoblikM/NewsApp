@@ -18,7 +18,8 @@ import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScree
 
 @Composable
 fun NavGraphSetup(
-    navController: NavHostController
+    navController: NavHostController,
+    newsScreenViewModel: NewsScreenViewModel = hiltViewModel()
 ){
     val argKey = "url"
     NavHost(
@@ -27,7 +28,7 @@ fun NavGraphSetup(
     ){
         composable(route = Screen.NewsScreen.route,
             ){
-            val viewModel: NewsScreenViewModel = hiltViewModel()
+            val viewModel: NewsScreenViewModel = newsScreenViewModel
             NewsScreen(
                state = viewModel.state,
                 onCardClicked = {result->

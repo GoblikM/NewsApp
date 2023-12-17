@@ -28,7 +28,7 @@ class NewsRepositoryImpl(private val newsApi: NewsApi, private val articleDao: A
             Resource.Success(response.articles.results)
         }
         catch (e: Exception) {
-            Resource.Error(message = "Failed to fetch the news ${e.message}")
+            Resource.Error(message = "Nepodařilo se načíst zprávy")
         }
     }
 
@@ -48,7 +48,7 @@ class NewsRepositoryImpl(private val newsApi: NewsApi, private val articleDao: A
             Resource.Success(articleInfo)
 
         } catch (e: Exception) {
-            Resource.Error(message = "Failed to fetch the news ${e.message}")
+            Resource.Error(message = "Nepodařilo se načíst zprávu")
         }
 
     }
