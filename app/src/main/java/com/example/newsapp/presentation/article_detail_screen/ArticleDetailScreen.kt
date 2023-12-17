@@ -28,8 +28,8 @@ import com.example.newsapp.presentation.article_detail_screen.components.Article
 @Composable
 fun ArticleDetailScreen(
     state: ArticleDetailScreenState,
-    articleURI: String,
-    onReturnBntClicked: () -> Unit
+    onReturnBntClicked: () -> Unit,
+    onFloatingButtonClicked: (String) -> Unit
     ) {
     val scrollState = rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -55,7 +55,10 @@ fun ArticleDetailScreen(
 
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = {
+                state.article?.let { onFloatingButtonClicked(it.url) }
+
+            }) {
                 Icon(
                     imageVector = Icons.Default.ArrowForward,
                     contentDescription = "To Url",

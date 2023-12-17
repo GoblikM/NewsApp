@@ -14,7 +14,6 @@ import com.example.newsapp.presentation.news_screen.NewsScreen
 import com.example.newsapp.presentation.news_screen.NewsScreenViewModel
 import com.example.newsapp.presentation.original_article_screen.OriginalArticleScreen
 import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScreen
-import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScreenState
 import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScreenViewModel
 
 @Composable
@@ -52,10 +51,12 @@ fun NavGraphSetup(
             Log.d("RecievedUri", "NavGraphSetup: $uri")
             ArticleDetailScreen(
                 state = viewModel.state,
-                articleURI = uri?: "",
                 onReturnBntClicked = {
                     navController.popBackStack()
-                }
+                },
+                onFloatingButtonClicked = {url->
+                    navController.navigate("originalArticle_screen?$argKey=$url")
+                },
             )
 
         }

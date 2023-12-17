@@ -14,9 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.data.database.ArticleEntity
 import com.example.newsapp.presentation.shared_components.ImageHolder
@@ -34,40 +32,40 @@ fun BottomSheetContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = article.title,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(
                 text = article.date ,
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
                 )
             Spacer(modifier = Modifier.height(10.dp))
-            ImageHolder(size = 250.dp, imgUrl = article.image )
-            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = article.title,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.headlineMedium,
+            )
+            Spacer(modifier = Modifier.height(10.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(
-                    text = article.authors ?: "",
+                    text = article.authors ?: "Autor neznámý",
                     style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = article.source ?: "",
                     style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Bold
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+            ImageHolder(size = 250.dp, imgUrl = article.image )
+            Spacer(modifier = Modifier.height(10.dp))
             Button(
                 onClick = onShowArticleClicked,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Přejít na článek")
             }
+            Spacer(modifier = Modifier.height(10.dp))
 
 
 
