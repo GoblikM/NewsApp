@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Room
 import com.example.newsapp.data.api.NewsApi
 import com.example.newsapp.data.api.NewsApi.Companion.BASE_URL
+import com.example.newsapp.data.database.ArticleDao
 import com.example.newsapp.data.database.ArticleDatabase
 import com.example.newsapp.data.repository.NewsRepositoryImpl
-import com.example.newsapp.data.database.ArticleDao
 import com.example.newsapp.domain.repository.INewsRepository
 import dagger.Module
 import dagger.Provides

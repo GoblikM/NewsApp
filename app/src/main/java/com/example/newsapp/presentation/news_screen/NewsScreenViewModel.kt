@@ -11,7 +11,6 @@ import com.example.newsapp.domain.model.newsResponse.Result
 import com.example.newsapp.domain.repository.INewsRepository
 import com.example.newsapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
