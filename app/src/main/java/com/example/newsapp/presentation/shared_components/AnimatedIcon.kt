@@ -40,7 +40,7 @@ fun AnimatedIcon(
 
     Icon(imageVector = imageVector,
         contentDescription = contentDescription,
-        tint = if (isClicked) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary,
+        tint = if (isClicked) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
         modifier = modifier
             .size(20.dp)
             .clickable {

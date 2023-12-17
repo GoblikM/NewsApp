@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.data.database.ArticleEntity
 import com.example.newsapp.presentation.shared_components.ImageHolder
+import com.example.newsapp.utils.formatDate
 
 @Composable
 fun SavedArticlesCard(
@@ -90,7 +91,7 @@ fun SavedArticlesCard(
                 ) {
 
                     Text(
-                        text = article.date,
+                        text = formatDate(article.date),
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = MaterialTheme.colorScheme.secondary
                         ),

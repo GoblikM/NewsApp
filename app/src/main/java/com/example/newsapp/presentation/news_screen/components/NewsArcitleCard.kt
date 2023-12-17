@@ -24,6 +24,7 @@ import com.example.newsapp.domain.model.newsResponse.Result
 import com.example.newsapp.presentation.news_screen.NewsScreenEvent
 import com.example.newsapp.presentation.shared_components.AnimatedIcon
 import com.example.newsapp.presentation.shared_components.ImageHolder
+import com.example.newsapp.utils.formatDate
 
 @Composable
 fun NewsArticleCard(
@@ -53,7 +54,7 @@ fun NewsArticleCard(
 
                 ) {
                 Text(
-                    text = article.source?.title?.uppercase() ?: "Neuveden",
+                    text = article.source?.title?.uppercase() ?: "Zdroj neuveden",
                     style = MaterialTheme.typography.titleSmall.copy(
                         color = MaterialTheme.colorScheme.primary
                     ),
@@ -94,7 +95,7 @@ fun NewsArticleCard(
                 ) {
 
                     Text(
-                        text = article.date,
+                        text = formatDate(article.date),
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = MaterialTheme.colorScheme.secondary
                         ),

@@ -22,3 +22,16 @@ fun getPreviousDate(days: Int): String {
     return dateFormat.format(previousDate)
 
 }
+
+@SuppressLint("SimpleDateFormat")
+fun formatDate(date: String): String {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd")
+    val outputFormat = SimpleDateFormat("dd. MM. yyyy")
+    return try {
+        val parsedDate = inputFormat.parse(date)
+        outputFormat.format(parsedDate)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        date
+    }
+}

@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.data.database.ArticleEntity
 import com.example.newsapp.presentation.shared_components.ImageHolder
+import com.example.newsapp.utils.formatDate
 
 @Composable
 fun BottomSheetContent(
@@ -32,7 +33,7 @@ fun BottomSheetContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = article.date ,
+                text = formatDate(article.date) ,
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
                 )

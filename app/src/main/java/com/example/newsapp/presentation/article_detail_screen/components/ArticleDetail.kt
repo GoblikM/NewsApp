@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.domain.model.articleDetailResponse.Info
 import com.example.newsapp.presentation.shared_components.ImageHolder
+import com.example.newsapp.utils.formatDate
 
 @Composable
 fun ArticleDetail(
@@ -51,7 +52,7 @@ fun ArticleDetail(
 
             ) {
             Text(
-                text = article.authors.firstOrNull()?.name ?: "Unknown",
+                text = article.authors.firstOrNull()?.name ?: "Autor neznámý",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = MaterialTheme.colorScheme.secondary
                 )
@@ -65,7 +66,7 @@ fun ArticleDetail(
                     color = MaterialTheme.colorScheme.secondary),
             )
             Spacer(modifier = Modifier.padding(8.dp))
-            Text(text = article.date,
+            Text(text = formatDate(article.date),
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = MaterialTheme.colorScheme.secondary
                 )
