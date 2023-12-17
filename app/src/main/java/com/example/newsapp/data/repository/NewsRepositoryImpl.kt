@@ -86,7 +86,9 @@ class NewsRepositoryImpl(private val newsApi: NewsApi, private val articleDao: A
     }
 
     override suspend fun deleteArticleFromDb(article: ArticleEntity) {
-        articleDao.deleteArticleFromDb(article)
+        withContext(Dispatchers.IO){
+            articleDao.deleteArticleFromDb(article)
+        }
     }
 }
 

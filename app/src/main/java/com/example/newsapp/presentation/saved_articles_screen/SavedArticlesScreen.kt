@@ -1,5 +1,9 @@
 package com.example.newsapp.presentation.saved_articles_screen
 
+import android.widget.Toast
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,21 +15,29 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DismissDirection
+import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +48,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.newsapp.R
 import com.example.newsapp.domain.model.newsResponse.Result
+import com.example.newsapp.presentation.news_screen.NewsScreenEvent
 import com.example.newsapp.presentation.news_screen.components.SavedArticlesCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,8 +57,9 @@ fun SavedArticlesScreen(
     state: SavedArticlesScreenState,
     onCardClicked: (Result) -> Unit,
     onReturnBntClicked: () -> Unit,
+    onEvent: (SavedArticlesEvent) -> Unit
 
-    ) {
+) {
     val scrollState = rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -84,32 +98,77 @@ fun SavedArticlesScreen(
                     .fillMaxSize()
                     .padding(padding),
                 state = state,
-                onCardClicked = onCardClicked
+                onCardClicked = onCardClicked,
+                onEvent = onEvent
             )
         }
     )
 }
 
 
-/* TODO */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SavedArticlesList(
     modifier: Modifier = Modifier,
     state: SavedArticlesScreenState,
-    onCardClicked: (Result) -> Unit
+    onCardClicked: (Result) -> Unit,
+    onEvent: (SavedArticlesEvent) -> Unit
 ) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.no_saved_articles))
+    val context = LocalContext.current.applicationContext
 
     LazyColumn(
         modifier = modifier
             .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(state.articles) { article ->
-            SavedArticlesCard(
-                article = article,
-                onCardClicked = onCardClicked
+        items(
+            items = state.articles,
+            key = { article -> article.uri }
+        ) { article ->
+            val dismissState = rememberDismissState()
+
+            if (dismissState.isDismissed(DismissDirection.EndToStart)) {
+                onEvent(SavedArticlesEvent.OnSwipeToDelete(article))
+            }
+            SwipeToDismiss(
+                state = dismissState,
+                directions = setOf(DismissDirection.EndToStart),
+                background = {
+                    val backgroundColor by animateColorAsState(
+                        when (dismissState.targetValue) {
+                            DismissValue.DismissedToStart -> MaterialTheme.colorScheme.error
+                            else -> MaterialTheme.colorScheme.surface
+                        }, label = ""
+                    )
+                    val iconScale by animateFloatAsState(
+                        targetValue = if (dismissState.targetValue == DismissValue.Default) 1.3f else 0.5f,
+                        label = ""
+                    )
+                    Box(
+                        Modifier
+                            .fillMaxSize()
+                            .background(color = backgroundColor)
+                            .padding(end = 16.dp),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Icon(
+                            modifier = Modifier.scale(iconScale),
+                            imageVector = Icons.Outlined.Delete,
+                            contentDescription = "Delete",
+                            tint = androidx.compose.ui.graphics.Color.White
+                        )
+                    }
+                },
+                dismissContent = {
+                    SavedArticlesCard(
+                        article = article,
+                        onCardClicked = onCardClicked
+                    )
+
+                }
             )
+
         }
     }
     Box(
@@ -148,12 +207,3 @@ fun SavedArticlesList(
     }
 }
 
-@Composable
-@Preview
-fun SavedArticlesScreenPreview() {
-    SavedArticlesScreen(
-        state = SavedArticlesScreenState(),
-        onCardClicked = {},
-        onReturnBntClicked = {}
-    )
-}

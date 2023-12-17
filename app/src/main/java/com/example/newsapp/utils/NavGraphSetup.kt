@@ -66,7 +66,8 @@ fun NavGraphSetup(
                 onCardClicked = {},
                 onReturnBntClicked = {
                     navController.popBackStack()
-                }
+                },
+                onEvent = viewModel::onEvent
             )
 
         }
