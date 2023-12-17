@@ -12,6 +12,7 @@ import com.example.newsapp.presentation.article_detail_screen.ArticleDetailScree
 import com.example.newsapp.presentation.article_detail_screen.ArticleDetailViewModel
 import com.example.newsapp.presentation.news_screen.NewsScreen
 import com.example.newsapp.presentation.news_screen.NewsScreenViewModel
+import com.example.newsapp.presentation.original_article_screen.OriginalArticleScreen
 import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScreen
 import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScreenState
 import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScreenViewModel
@@ -20,6 +21,7 @@ import com.example.newsapp.presentation.saved_articles_screen.SavedArticlesScree
 fun NavGraphSetup(
     navController: NavHostController
 ){
+    val argKey = "url"
     NavHost(
         navController = navController,
         startDestination = Screen.NewsScreen.route
@@ -63,11 +65,28 @@ fun NavGraphSetup(
             val viewModel : SavedArticlesScreenViewModel = hiltViewModel()
             SavedArticlesScreen(
                 state = viewModel.state,
-                onCardClicked = {},
                 onReturnBntClicked = {
                     navController.popBackStack()
                 },
-                onEvent = viewModel::onEvent
+                onEvent = viewModel::onEvent,
+                onShowArticleClicked = {url->
+                    navController.navigate("originalArticle_screen?$argKey=$url")
+                }
+            )
+
+        }
+        composable(
+            route = "originalArticle_screen?$argKey={url}",
+            arguments = listOf(
+                navArgument(argKey){type = NavType.StringType}
+            )
+        ){
+            navBackStackEntry ->
+            OriginalArticleScreen(
+                url = navBackStackEntry.arguments?.getString(argKey),
+                onReturnBntClicked = {
+                    navController.popBackStack()
+                }
             )
 
         }

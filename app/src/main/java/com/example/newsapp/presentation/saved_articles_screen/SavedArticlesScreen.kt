@@ -1,6 +1,5 @@
 package com.example.newsapp.presentation.saved_articles_screen
 
-import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -23,45 +22,76 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDismissState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.newsapp.R
-import com.example.newsapp.domain.model.newsResponse.Result
-import com.example.newsapp.presentation.news_screen.NewsScreenEvent
-import com.example.newsapp.presentation.news_screen.components.SavedArticlesCard
+import com.example.newsapp.data.database.ArticleEntity
+import com.example.newsapp.presentation.saved_articles_screen.components.BottomSheetContent
+import com.example.newsapp.presentation.saved_articles_screen.components.SavedArticlesCard
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SavedArticlesScreen(
     state: SavedArticlesScreenState,
-    onCardClicked: (Result) -> Unit,
     onReturnBntClicked: () -> Unit,
-    onEvent: (SavedArticlesEvent) -> Unit
+    onEvent: (SavedArticlesEvent) -> Unit,
+    onShowArticleClicked: (String) -> Unit
 
 ) {
     val scrollState = rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val coroutineScope = rememberCoroutineScope()
+
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var shouldBottomSheetShow by remember { mutableStateOf(false) }
+
+    if(shouldBottomSheetShow){
+        ModalBottomSheet(
+            onDismissRequest = { shouldBottomSheetShow = false },
+            sheetState = sheetState,
+        ) {
+            state.selectedArticle?.let { article ->
+                BottomSheetContent(
+                    article = article,
+                    onShowArticleClicked = {
+                        onShowArticleClicked(article.url)
+                        coroutineScope.launch{ sheetState.hide() }.invokeOnCompletion {
+                            if(!sheetState.isVisible) shouldBottomSheetShow = false
+                        }
+
+                    }
+                )
+
+            }
+
+        }
+    }
 
     Scaffold(modifier = Modifier
         .nestedScroll(scrollBehavior.nestedScrollConnection)
@@ -90,19 +120,21 @@ fun SavedArticlesScreen(
 
             )
 
-        },
-
-        content = { padding ->
-            SavedArticlesList(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-                state = state,
-                onCardClicked = onCardClicked,
-                onEvent = onEvent
-            )
         }
-    )
+
+    ) { padding ->
+        SavedArticlesList(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            state = state,
+            onCardClicked = { article ->
+                shouldBottomSheetShow = true
+                onEvent(SavedArticlesEvent.onCardClicked(article))
+            },
+            onEvent = onEvent
+        )
+    }
 }
 
 
@@ -111,7 +143,7 @@ fun SavedArticlesScreen(
 fun SavedArticlesList(
     modifier: Modifier = Modifier,
     state: SavedArticlesScreenState,
-    onCardClicked: (Result) -> Unit,
+    onCardClicked: (ArticleEntity) -> Unit,
     onEvent: (SavedArticlesEvent) -> Unit
 ) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.no_saved_articles))

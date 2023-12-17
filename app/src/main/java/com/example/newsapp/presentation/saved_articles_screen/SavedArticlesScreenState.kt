@@ -6,6 +6,7 @@ data class SavedArticlesScreenState(
     val isLoading: Boolean = false,
     val articles: List<ArticleEntity> = emptyList(),
     val error: String? = null,
+    val selectedArticle: ArticleEntity? = null
 )
 
 

@@ -1,5 +1,6 @@
-package com.example.newsapp.presentation.news_screen.components
+package com.example.newsapp.presentation.saved_articles_screen.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,17 +18,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.data.database.ArticleEntity
-import com.example.newsapp.domain.model.newsResponse.Result
 import com.example.newsapp.presentation.shared_components.ImageHolder
 
 @Composable
 fun SavedArticlesCard(
     article: ArticleEntity,
     modifier: Modifier = Modifier,
-    onCardClicked: (Result) -> Unit,
+    onCardClicked: (ArticleEntity) -> Unit,
 ) {
     Card(
         elevation = CardDefaults.cardElevation(4.dp),
+        modifier = modifier
+            .clickable { onCardClicked(article) }
     ) {
         Column(
             modifier = Modifier

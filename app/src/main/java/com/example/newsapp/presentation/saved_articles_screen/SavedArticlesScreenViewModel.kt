@@ -28,6 +28,9 @@ constructor(private val newsRepository: INewsRepository) : ViewModel() {
                     )
                 }
             }
+            is SavedArticlesEvent.onCardClicked -> {
+                state = state.copy(selectedArticle = event.article)
+            }
         }
     }
 
