@@ -7,4 +7,5 @@ data class NewsScreenState(
     val articles: List<Result> = emptyList(),
     val error: String? = null,
     val isSearchBarVisible: Boolean = false,
+    val isRefreshing: Boolean = false,
 )

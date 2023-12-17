@@ -7,7 +7,7 @@ import com.example.newsapp.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface INewsRepository {
-    suspend fun getNews() :Resource<List<Result>>
+    suspend fun getNews(page: Int):Resource<List<Result>>
     suspend fun getArticleDetails(articleUri:String) :Resource<Info>
     suspend fun getAllArticlesFromDb(): Flow<List<ArticleEntity>>
     suspend fun insertArticleToDb(article: Result)

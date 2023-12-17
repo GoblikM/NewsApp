@@ -22,9 +22,9 @@ class NewsRepositoryImpl(private val newsApi: NewsApi, private val articleDao: A
      *     Error -> Error message
      *
      */
-    override suspend fun getNews(): Resource<List<Result>> {
+    override suspend fun getNews(page: Int): Resource<List<Result>> {
         return try {
-            val response = newsApi.getTopNews()
+            val response = newsApi.getTopNews(page = page)
             Resource.Success(response.articles.results)
         }
         catch (e: Exception) {
@@ -58,7 +58,7 @@ class NewsRepositoryImpl(private val newsApi: NewsApi, private val articleDao: A
     }
 
     override suspend fun insertArticleToDb(article: Result) {
-        val articleToSave: ArticleEntity = ArticleEntity(
+        val articleToSave = ArticleEntity(
             authors = article.authors.firstOrNull()?.name,
             body = article.body,
             dataType = article.dataType,

@@ -105,5 +105,9 @@ dependencies {
     val lottie_version = "6.2.0"
     implementation("com.airbnb.android:lottie-compose:$lottie_version")
 
+    // Pull to refresh
+    implementation("androidx.compose.material:material:1.5.4")
+
+
 
 }

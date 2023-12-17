@@ -9,8 +9,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,7 +45,7 @@ import com.example.newsapp.presentation.news_screen.components.NewsArticleCard
 import com.example.newsapp.presentation.shared_components.TopBar
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun NewsScreen(
     state: NewsScreenState,
@@ -56,6 +60,10 @@ fun NewsScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val snackbarHostState = remember { SnackbarHostState() }
 
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = state.isRefreshing,
+        onRefresh = { onEvent(NewsScreenEvent.onRefresh) }
+    )
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -77,7 +85,7 @@ fun NewsScreen(
                 SnackbarHost(
                     hostState = snackbarHostState,
 
-                )
+                    )
             },
             topBar = {
                 TopBar(
@@ -106,28 +114,43 @@ fun NewsScreen(
                     )
                 }
             },
+
             content = { padding ->
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding),
                 ) {
-                    NewsList(
-                        state = state,
-                        onCardClicked = onCardClicked,
-                        lazyListState = lazyListState,
-                        onEvent = onEvent,
-                        showSnackBar = {
-                            scope.launch {
-                                val result = snackbarHostState.showSnackbar(
-                                    message = "Článek uložen",
-                                    actionLabel = "Zavřít",
-                                    duration = SnackbarDuration.Short,
-                                )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .pullRefresh(pullRefreshState)
 
+                    ) {
+                        NewsList(
+                            state = state,
+                            onCardClicked = onCardClicked,
+                            lazyListState = lazyListState,
+                            onEvent = onEvent,
+                            showSnackBar = {
+                                scope.launch {
+                                    val result = snackbarHostState.showSnackbar(
+                                        message = "Článek uložen",
+                                        actionLabel = "Zavřít",
+                                        duration = SnackbarDuration.Short,
+                                    )
+
+                                }
                             }
-                        }
+                        )
+
+                    PullRefreshIndicator(
+                        refreshing = state.isRefreshing,
+                        state = pullRefreshState,
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
                     )
+                    }
 
                 }
             }
@@ -147,7 +170,9 @@ fun NewsList(
     showSnackBar: () -> Unit
 ) {
     Surface(
-        color = MaterialTheme.colorScheme.background
+        color = MaterialTheme.colorScheme.background,
+        modifier = modifier
+            .fillMaxSize()
     ) {
         LazyColumn(
             state = lazyListState,
@@ -167,6 +192,7 @@ fun NewsList(
             }
 
         }
+
         Box(
             modifier = Modifier
                 .fillMaxSize(),

@@ -2,15 +2,16 @@ package com.example.newsapp.presentation.news_screen
 
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.newsapp.data.database.ArticleEntity
 import com.example.newsapp.domain.model.newsResponse.Result
 import com.example.newsapp.domain.repository.INewsRepository
 import com.example.newsapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,9 +26,10 @@ class NewsScreenViewModel @Inject constructor(
      * and will be updated by the ViewModel
      */
     var state by mutableStateOf(NewsScreenState())
+    var page by mutableIntStateOf(1)
 
     init {
-       //getNewsArticles()
+       getNewsArticles()
     }
 
     fun onEvent(event: NewsScreenEvent) {
@@ -37,17 +39,30 @@ class NewsScreenViewModel @Inject constructor(
                     saveArticle(event.article)
                 }
             }
+            is NewsScreenEvent.onRefresh -> {
+                viewModelScope.launch {
+                    state.copy(isRefreshing = true)
+                    delay(1000)
+                    page += 1
+                    if(page > 10){
+                        page = 1
+                    }
+                    getNewsArticles(page)
+                }
+
+            }
         }
     }
 
-    private fun getNewsArticles() {
+    private fun getNewsArticles(page: Int = 1) {
         viewModelScope.launch {
             state = state.copy(isLoading = true)
-            state = when(val result = newsRepository.getNews()){
+            state = when(val result = newsRepository.getNews(page)){
                 is Resource.Success -> {
                     state.copy(
                         articles =  result.data ?: emptyList(),
                         isLoading = false,
+                        isRefreshing = false
                     )
                 }
 
@@ -55,6 +70,7 @@ class NewsScreenViewModel @Inject constructor(
                     state.copy(
                         error = result.message,
                         isLoading = false,
+                        isRefreshing = false,
                         articles = emptyList()
                     )
                 }

@@ -36,6 +36,7 @@ interface NewsApi {
         @Query("resultType") resultType: String = "articles",
         @Query("articlesSortBy") articlesSortBy: String = "rel",
         @Query("includeArticleImage") includeArticleImage: Boolean = true,
+        @Query("articlesPage") page: Int,
         @Query("apiKey") apiKey: String = API_KEY
     ): NewsResponse
 
