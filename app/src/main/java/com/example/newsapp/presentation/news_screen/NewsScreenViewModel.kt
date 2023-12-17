@@ -41,8 +41,6 @@ class NewsScreenViewModel @Inject constructor(
             }
             is NewsScreenEvent.onRefresh -> {
                 viewModelScope.launch {
-                    state.copy(isRefreshing = true)
-                    delay(1000)
                     page += 1
                     if(page > 10){
                         page = 1

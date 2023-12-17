@@ -1,5 +1,8 @@
 package com.example.newsapp.presentation.news_screen.components
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,22 +12,31 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.domain.model.newsResponse.Result
 import com.example.newsapp.presentation.news_screen.NewsScreenEvent
+import com.example.newsapp.presentation.shared_components.AnimatedIcon
 import com.example.newsapp.presentation.shared_components.ImageHolder
+import kotlinx.coroutines.delay
 
 @Composable
 fun NewsArticleCard(
@@ -32,7 +44,8 @@ fun NewsArticleCard(
     modifier: Modifier = Modifier,
     onCardClicked: (Result) -> Unit,
     onEvent: (NewsScreenEvent) -> Unit,
-    showSnackBar: () -> Unit
+    showSnackBar: () -> Unit,
+    onShareBtnClicked: () -> Unit
 ) {
 
     Card(
@@ -48,13 +61,12 @@ fun NewsArticleCard(
 
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
 
                 ) {
                 Text(
-                    text = article.source?.title?.uppercase() ?:  "Neuveden",
+                    text = article.source?.title?.uppercase() ?: "Neuveden",
                     style = MaterialTheme.typography.titleSmall.copy(
                         color = MaterialTheme.colorScheme.primary
                     ),
@@ -63,8 +75,7 @@ fun NewsArticleCard(
                 )
             }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
 
@@ -84,9 +95,7 @@ fun NewsArticleCard(
             }
             Spacer(modifier = Modifier.padding(8.dp))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.Bottom
+                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom
             ) {
                 Row(
                     modifier = Modifier
@@ -113,29 +122,21 @@ fun NewsArticleCard(
                     verticalAlignment = Alignment.Bottom
 
                 ) {
+                    AnimatedIcon(imageVector = Icons.Default.Favorite,
+                        contentDescription = "Save",
+                        onClick = {
+                            showSnackBar()
+                            onEvent(NewsScreenEvent.OnSaveArticleClicked(article))
+                        })
 
-                    Icon(
 
-                        imageVector = Icons.Default.ThumbUp,
-                        contentDescription = "Favorite",
-                        tint = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable {
-                                showSnackBar()
-                                onEvent(NewsScreenEvent.OnSaveArticleClicked(article))
-                            }
-                    )
                     Spacer(modifier = Modifier.padding(8.dp))
 
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        tint = MaterialTheme.colorScheme.secondary,
+
+                    AnimatedIcon(imageVector = Icons.Default.Share,
                         contentDescription = "Share",
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable {  }
-                    )
+                        onClick = { onShareBtnClicked() })
+
 
                 }
 
@@ -148,5 +149,7 @@ fun NewsArticleCard(
 
 
 }
+
+
 
 

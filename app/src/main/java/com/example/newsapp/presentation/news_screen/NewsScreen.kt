@@ -1,5 +1,6 @@
 package com.example.newsapp.presentation.news_screen
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,7 +37,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.R
 import com.example.newsapp.domain.model.newsResponse.Result
@@ -56,13 +59,16 @@ fun NewsScreen(
 ) {
     val lazyListState = rememberLazyListState()
     val scope = rememberCoroutineScope()
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val snackbarHostState = remember { SnackbarHostState() }
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = state.isRefreshing,
-        onRefresh = { onEvent(NewsScreenEvent.onRefresh) }
+        onRefresh = {
+            state.copy(isRefreshing = true)
+            onEvent(NewsScreenEvent.onRefresh)
+        }
     )
 
     ModalNavigationDrawer(
@@ -174,6 +180,7 @@ fun NewsList(
         modifier = modifier
             .fillMaxSize()
     ) {
+        val context = LocalContext.current
         LazyColumn(
             state = lazyListState,
             modifier = modifier
@@ -187,7 +194,17 @@ fun NewsList(
                     article = article,
                     onCardClicked = onCardClicked,
                     onEvent = onEvent,
-                    showSnackBar = showSnackBar
+                    showSnackBar = showSnackBar,
+                    onShareBtnClicked = {
+                        val sendIntent: Intent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, article.url)
+                            type = "text/plain"
+                        }
+                        val shareIntent = Intent.createChooser(sendIntent, null)
+                        context.startActivity(shareIntent)
+
+                    }
                 )
             }
 
@@ -203,7 +220,10 @@ fun NewsList(
                 CircularProgressIndicator()
             }
             if (state.error != null) {
-                Text(text = state.error)
+                Text(
+                    text = state.error,
+                    textAlign = TextAlign.Center
+                )
             }
 
         }
