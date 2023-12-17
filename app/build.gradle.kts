@@ -108,6 +108,9 @@ dependencies {
     // Pull to refresh
     implementation("androidx.compose.material:material:1.5.4")
 
+    // Splash screen
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
 
 
 }
